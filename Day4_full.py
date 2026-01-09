@@ -53,3 +53,63 @@ for i in range(1,len(f)-1):
 
 print(' ')
 print('Accessible stacks: ' + str(accessible))
+
+
+accessible = 0
+removed = 1
+f2 = f
+
+while removed > 0:
+    removed = 0  
+    f = f2           # replace tmp array into old array updated with removed rollsS
+
+    for i in range(1,len(f)-1):
+        above  = f[i-1]
+        middle = f[i]
+        below  = f[i+1]
+
+        for j in range(0,len(middle)):
+            a_l = a_m = a_r = m_l = m_r = b_l = b_m = b_r = 0
+            if middle[j] == '1':
+
+                if j == 0:
+                    a_m = above[j]
+                    a_r = above[j+1] 
+                    
+                    m_r = middle[j+1]
+
+                    b_m = below[j]
+                    b_r = below[j+1]
+
+                elif j == len(middle)-1:
+                    a_m = above[j]
+                    a_l = above[j-1] 
+                    
+                    m_l = middle[j-1]
+
+                    b_m = below[j]
+                    b_l = below[j-1]
+                    
+                else:
+                    a_l = above[j-1]
+                    a_m = above[j]
+                    a_r = above[j+1]
+
+                    m_l = middle[j-1]
+                    m_r = middle[j+1]
+
+                    b_l = below[j-1]
+                    b_m = below[j]
+                    b_r = below[j+1]
+                    
+                if int(a_l) + int(a_m) + int(a_r) + int(m_l) + int(m_r) + int(b_l) + int(b_m) + int(b_r) < 4:
+                    accessible += 1
+
+                    l = f2[i]                        # get current line from temp file
+                    f2[i] = l [:j] + "0" + l[j+1:]   # update temp file by removing roll
+
+                    removed += 1                     # count number of removed row
+
+
+print(' ')
+print('Rolls removed: ' + str(accessible))
